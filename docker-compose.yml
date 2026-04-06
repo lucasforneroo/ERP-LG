@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # Base de Datos (MariaDB como pidió el Track 2)
+  db:
+    image: mariadb:10.11
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: erp_root_password
+      MARIADB_DATABASE: erp_industrial
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # --- BACKEND FASTAPI (Instancia Única Modular) ---
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=mysql+asyncmy://root:erp_root_password@db:3306/erp_industrial
+    depends_on:
+      - db
+
+  # --- FRONTEND REACT (Instancia Única) ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
