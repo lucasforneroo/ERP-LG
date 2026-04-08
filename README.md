@@ -71,8 +71,18 @@ No se requiere Python, Node.js ni bases de datos instaladas localmente.
 
 ## Levantar el proyecto
 
+El proyecto está dividido en dos stacks de Docker Compose para aislar la base de datos de la aplicación.
+
+**Paso 1: Levantar la base de datos (Red compartida)**
 ```bash
-docker compose up --build
+cd database
+docker compose up -d
+```
+
+**Paso 2: Levantar la aplicación (Backend + Frontend)**
+```bash
+cd ..
+docker compose up --build -d
 ```
 
 | Servicio | URL |
