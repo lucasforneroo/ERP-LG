@@ -57,6 +57,8 @@ ERP-LG/
 │   ├── package.json
 │   ├── vite.config.js
 │   └── Dockerfile.dev
+├── database/
+│   └── docker-compose.yml
 ├── docker-compose.yml
 ```
 
